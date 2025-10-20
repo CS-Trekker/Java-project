@@ -27,7 +27,9 @@ ALIYUN_API_KEY=os.getenv("DASHSCOPE_API_KEY")
 
 model=ChatTongyi(api_key=ALIYUN_API_KEY)
 
+
 question="王云琦是不是pig?"
+
 
 thing=model.invoke(f"问题{question}中提到的事物是什么？只需要回答事物的中文名称。").content
 man=model.invoke(f"问题{question}中提到的人是谁？只需要给出人名。").content
@@ -35,3 +37,35 @@ answer_prompt=f"只能回答{man}是或yes或不如{thing},并给出理由。"
 
 result=model.invoke(f"{question}{answer_prompt}")
 print(result.content)
+
+
+
+class CulturalResourseRag:
+    def __init__(self,embedding_model='text-embedding-ada-002',llm_model='deepseek-reasoner'):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
