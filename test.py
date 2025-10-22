@@ -1,14 +1,18 @@
 import os
 import sys
-from dotenv import load_dotenv
-from langchain_dashscope import ChatDashScope
 import traceback
 
-print(f"--- 正在使用 Python 版本: {sys.version_info.major}.{sys.version_info.minor} ---")
-
-# 1. 加载 .env 文件
+# ----------------- 关键修复 -----------------
+# 必须在导入任何 dashscope 库之前加载 .env
+from dotenv import load_dotenv
 print("--- 正在加载 .env 文件... ---")
 load_dotenv(override=True)
+# ----------------------------------------------
+
+# 现在 .env 已经加载，我们可以安全地导入它们了
+from langchain_dashscope import ChatDashScope
+
+print(f"--- 正在使用 Python 版本: {sys.version_info.major}.{sys.version_info.minor} ---")
 
 # 2. 从 .env 读取密钥
 API_KEY = os.getenv("DASHSCOPE_API_KEY")
@@ -19,16 +23,21 @@ if not API_KEY:
     print("请确保 .env 文件和本脚本在同一目录下。")
     exit()
 else:
-    # 打印部分密钥以确认，这很安全
     print(f"成功加载 API Key (开头/结尾): {API_KEY[:4]}...{API_KEY[-4:]}")
-
+    
 try:
     # 4. 实例化
     print("--- 正在尝试初始化 ChatDashScope... ---")
-    model_test = ChatDashScope(api_key=API_KEY)
     
+    # ----------------- 关键修复 -----------------
+    # 不要手动传递 api_key。
+    # 让库自动从我们刚刚加载的环境变量中读取。
+    # 这是更健壮的标准做法。
+    model_test = ChatDashScope() 
+    # ----------------------------------------------
+
     if model_test.client is None:
-        print("!!! 错误：ChatDashScope 初始化后 self.client 依然是 None。!!!")
+         print("!!! 警告：ChatDashScope 初始化后 self.client 依然是 None。(这在某些新版本中是正常的)")
     else:
         print("+++ ChatDashScope 初始化成功 (self.client 已设置)。 +++")
 

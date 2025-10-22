@@ -23,10 +23,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.embeddings import DashScopeEmbeddings
 
 load_dotenv(override=True)
-print("--- 调试信息 ---")
-ALIYUN_API_KEY_DEBUG = os.getenv("DASHSCOPE_API_KEY")
-print(f"从 .env 读到的 ALIYUN_API_KEY 是: '{ALIYUN_API_KEY_DEBUG}'")
-print("------------------")
+
 
 
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
